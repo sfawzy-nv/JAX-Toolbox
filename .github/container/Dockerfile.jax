@@ -104,6 +104,11 @@ COPY --from=builder ${SRC_PATH_XLA} ${SRC_PATH_XLA}
 COPY --from=builder /usr/local/bin/bazel /usr/local/bin/bazel
 COPY --from=builder /builder/extra-targets/bin/* /usr/local/bin
 COPY --from=builder /builder/extra-targets/python/*.so /usr/lib/python3/dist-packages/
+# Carry the cudnn-frontend checkout into the runtime image so that XLA WORKSPACE's
+# new_local_repository(path="/opt/cudnn_frontend") resolves at `bazel test` time.
+# The builder stage receives /opt/cudnn_frontend via a CI-injected COPY (see
+# .gitlab-ci.yml: TENSOR_IR_CUDNN_FRONTEND_SRC/REF).
+COPY --from=builder /opt/cudnn_frontend /opt/cudnn_frontend
 
 # Preserve the versions of jax and xla
 COPY --from=builder /opt/manifest.d/git-clone.yaml /opt/manifest.d/git-clone.yaml
