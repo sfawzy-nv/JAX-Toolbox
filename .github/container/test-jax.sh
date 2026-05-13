@@ -15,6 +15,9 @@ usage() {
     echo "  --enable-x64           Enable 64-bit floating point support in JAX (DEFAULT, required for some tests)"
     echo "  --tests-per-gpu        How many test shards should be launched on each GPU in parallel."
     echo "  --visible-gpus         How many GPUs should be made visible to each test."
+    echo "  --xla-flags            Value to forward to bazel as --test_env=XLA_FLAGS=...."
+    echo "                         Defaults to the XLA_FLAGS env var if set; pass an empty"
+    echo "                         string to suppress forwarding."
     echo "  -q, --query            List all tests."
     echo "  -h, --help             Print usage."
     echo ""
@@ -30,6 +33,14 @@ CACHE_TEST_RESULTS=no
 ENABLE_X64=-1
 VISIBLE_GPUS=""
 JOBS_PER_GPU=""
+# Inherit XLA_FLAGS from the environment by default (e.g. baked into the image
+# via `ENV XLA_FLAGS=...`). `--xla-flags` overrides this; pass `--xla-flags ""`
+# to explicitly suppress forwarding.
+XLA_FLAGS_FORWARD="${XLA_FLAGS-}"
+XLA_FLAGS_SET=1
+if [[ -z "${XLA_FLAGS+x}" ]]; then
+    XLA_FLAGS_SET=0
+fi
 
 query_tests() {
     set -e -o pipefail
@@ -53,7 +64,7 @@ print_var() {
     echo "$1: ${!1}"
 }
 
-args=$(getopt -o b:qh --long battery:,build-jaxlib,cache-test-results:,disable-x64,enable-x64,reuse-jaxlib,query,tests-per-gpu:,visible-gpus:,help -- "$@")
+args=$(getopt -o b:qh --long battery:,build-jaxlib,cache-test-results:,disable-x64,enable-x64,reuse-jaxlib,query,tests-per-gpu:,visible-gpus:,xla-flags:,help -- "$@")
 if [[ $? -ne 0 ]]; then
     exit 1
 fi
@@ -98,6 +109,11 @@ while [ : ]; do
         VISIBLE_GPUS="$2"
         shift 2
         ;;
+    --xla-flags)
+        XLA_FLAGS_FORWARD="$2"
+        XLA_FLAGS_SET=1
+        shift 2
+        ;;
     -q | --query)
         query_tests
         ;;
@@ -135,6 +151,15 @@ if [[ $ENABLE_X64 != 0 ]]; then
     FLAGS+=("--test_env=JAX_ENABLE_X64=true")
 else
     FLAGS+=("--test_env=JAX_ENABLE_X64=false")
+fi
+
+# Forward XLA_FLAGS into the bazel test sandbox. Bazel does not inherit env
+# vars into tests by default, so without this anything set on the image (e.g.
+# `ENV XLA_FLAGS=...` in Dockerfile.jax) or in the calling shell is silently
+# dropped. Only forward when explicitly set (incl. via env) and non-empty so
+# bazel cache keys are not perturbed for the default case.
+if [[ $XLA_FLAGS_SET -eq 1 && -n "$XLA_FLAGS_FORWARD" ]]; then
+    FLAGS+=("--test_env=XLA_FLAGS=${XLA_FLAGS_FORWARD}")
 fi
 
 if [[ $BUILD_JAXLIB -eq 1 ]]; then
@@ -227,6 +252,7 @@ print_var GPU_MEMORIES_MIB
 print_var JOBS_PER_GPU
 print_var NGPUS
 print_var VISIBLE_GPUS
+print_var XLA_FLAGS_FORWARD
 
 ## Run tests
 cd ${SRC_PATH_JAX}
