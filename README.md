@@ -28,17 +28,23 @@ JAX Toolbox
 - **Experimental projects**: Experimental projects for developers to evaluate and provide feedback on
 
 ## Latest news
-- [**NGC JAX 26.06**](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/jax/tags?version=26.06-py3) container image released
-  - [`CUDA 13.3.0`](https://docs.nvidia.com/deeplearning/frameworks/cuda-dl-release-notes/rel-26-06.html)
+- **NGC 26.07** [**JAX**](https://catalog.ngc.nvidia.com/orgs/nvidia/-/containers/jax/26.07-py3) and [**MaxText**](https://catalog.ngc.nvidia.com/orgs/nvidia/-/containers/jax/26.07-maxtext-py3) images released
+  - [`CUDA 13.3.1`](https://docs.nvidia.com/deeplearning/frameworks/cuda-dl-release-notes/rel-26-07.html), JAX [`v0.10.2`](https://github.com/jax-ml/jax/releases/tag/jax-v0.10.2)
+  - Improved NCCL plugin expereince on GCP; cuDNN-backed flex attention re-enabled; support for CuDNN AoT compilation in XLA; LLM training speedup
+- **NGC 26.06** [**JAX**](https://catalog.ngc.nvidia.com/orgs/nvidia/-/containers/jax/26.06-py3) and [**MaxText**](https://catalog.ngc.nvidia.com/orgs/nvidia/-/containers/jax/26.06-maxtext-py3) images released
+  - [`CUDA 13.3.0`](https://docs.nvidia.com/deeplearning/frameworks/cuda-dl-release-notes/rel-26-06.html), JAX [`v0.10.1`](https://github.com/jax-ml/jax/releases/tag/jax-v0.10.2)
   - Improved GPU dot fusion cost model and introduced tileable GemmFusion.
-- [**NGC JAX 26.05**](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/jax/tags?version=26.05-py3) container image released
+- **NGC 26.05** [**JAX**](https://catalog.ngc.nvidia.com/orgs/nvidia/-/containers/jax/26.05-py3) and [**MaxText**](https://catalog.ngc.nvidia.com/orgs/nvidia/-/containers/jax/26.05-maxtext-py3) images released
+  - [`CUDA 13.2.1`](https://docs.nvidia.com/deeplearning/frameworks/cuda-dl-release-notes/rel-26-05.html), JAX [`v0.10.0`](https://github.com/jax-ml/jax/releases/tag/jax-v0.10.2)
   - performant `jax.ragged_dot`; XLA’s `nvfp4` kernel codegen improvements; multi-stream collective support in XLA; PDL (programmatic dependent launch) enablement in XLA and improved D2H & H2D copy overlap with compute
-- [**NGC JAX 26.04**](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/jax/tags?version=26.04-py3) container image released
+- **NGC 26.04** [**JAX**](https://catalog.ngc.nvidia.com/orgs/nvidia/-/containers/jax/26.04-py3) and [**MaxText**](https://catalog.ngc.nvidia.com/orgs/nvidia/-/containers/jax/26.04-maxtext-py3) images released
+  - [`CUDA 13.2.1`](https://docs.nvidia.com/deeplearning/frameworks/cuda-dl-release-notes/rel-26-05.html), JAX [`v0.9.2`](https://github.com/jax-ml/jax/releases/tag/jax-v0.9.2)
   - Thor support in JAX/XLA with full Triton; FP8 reduction support in XLA; and improved collective cost model of GB200/GB300
 
 Detailed release notes for NGC JAX containers are published in the [**NGC JAX release notes**](https://docs.nvidia.com/deeplearning/frameworks/jax-release-notes/index.html).
 
 ## Tech blogs
+- [Jul 2026] [**Reducing High-Bandwidth Memory Bottlenecks in JAX-Based LLM Training with Host Offloading**](https://developer.nvidia.com/blog/reducing-high-bandwidth-memory-bottlenecks-in-jax-based-llm-training-with-host-offloading/)
 - [Jun 2026] [**Train Models Faster with JAX and MaxText Using NVFP4 on NVIDIA Blackwell**](https://developer.nvidia.com/blog/train-models-faster-with-jax-and-maxtext-using-nvfp4-on-nvidia-blackwell/)
 - [Feb 2026] [**Accelerating Long-Context Model Training in JAX and XLA**](https://developer.nvidia.com/blog/accelerating-long-context-model-training-in-jax-and-xla/)
 - [Jul 2025] [**Optimizing for Low-Latency Communication in Inference Workloads with JAX and XLA**](https://developer.nvidia.com/blog/optimizing-for-low-latency-communication-in-inference-workloads-with-jax-and-xla/)
@@ -69,7 +75,7 @@ Stable builds are released at the end of each month to NVIDIA's [**NGC Catalog**
 | Framework | Models | Use cases | Container image (nightly build) | Container image (NGC release) |
 | :--- | :---: | :---: | :---: | :---: |
 | [jax](https://github.com/jax-ml/jax)|  | pre-training | `ghcr.io/nvidia/jax:jax` | [`nvcr.io/nvidia/jax:YY.MM-py3`](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/jax/tags?version=26.05-py3) |
-| [maxtext](https://github.com/google/maxtext)| [**DeepSeek V3.2**](https://maxtext.readthedocs.io/en/latest/reference/models/supported_models_and_architectures.html#deepseek), [**Gemma 4**](https://maxtext.readthedocs.io/en/latest/reference/models/supported_models_and_architectures.html#gemma), [**Llama 4**](https://maxtext.readthedocs.io/en/latest/reference/models/supported_models_and_architectures.html#llama), [**Qwen3**](https://maxtext.readthedocs.io/en/latest/reference/models/supported_models_and_architectures.html#qwen3), [**Qwen 3.5**](https://maxtext.readthedocs.io/en/latest/reference/models/supported_models_and_architectures.html#qwen3-5), [**Mixtral**](https://maxtext.readthedocs.io/en/latest/reference/models/supported_models_and_architectures.html#mistral-mixtral), [**Kimi K2.6**](https://maxtext.readthedocs.io/en/latest/reference/models/supported_models_and_architectures.html#kimi) | pre-training | `ghcr.io/nvidia/jax:maxtext` | [`nvcr.io/nvidia/jax:YY.MM-maxtext-py3`](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/jax/tags?version=26.05-maxtext-py3) |
+| [maxtext](https://github.com/google/maxtext)| [**DeepSeek V3.2**](https://maxtext.readthedocs.io/en/latest/reference/models/supported_models_and_architectures.html#deepseek), [**Gemma 4**](https://maxtext.readthedocs.io/en/latest/reference/models/supported_models_and_architectures.html#gemma), [**Llama 4**](https://maxtext.readthedocs.io/en/latest/reference/models/supported_models_and_architectures.html#llama), [**Mixtral**](https://maxtext.readthedocs.io/en/latest/reference/models/supported_models_and_architectures.html#mistral-mixtral) | pre-training | `ghcr.io/nvidia/jax:maxtext` | [`nvcr.io/nvidia/jax:YY.MM-maxtext-py3`](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/jax/tags?version=26.05-maxtext-py3) |
 | [axlearn](./docs/frameworks/axlearn/README.md) | Fuji | pre-training | `ghcr.io/nvidia/jax:axlearn` | |
 | [alphafold3](https://github.com/google-deepmind/alphafold3) | Evoformer | inference | `ghcr.io/nvidia/jax:alphafold` | |
 
